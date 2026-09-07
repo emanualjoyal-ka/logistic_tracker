@@ -11,3 +11,190 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum UserRole {
+  CUSTOMER
+  DELIVERY_PARTNER
+  ADMIN
+}
+
+enum VehicleType {
+  BIKE
+  SCOOTER
+  CAR
+  VAN
+}
+
+enum OrderStatus {
+  PENDING
+  ASSIGNED
+  ACCEPTED
+  PICKED_UP
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum TrafficCondition {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum WeatherCondition {
+  CLEAR
+  RAIN
+  HEAVY_RAIN
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(CUSTOMER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  partnerProfile DeliveryPartnerProfile?
+  orders         Order[]
+  addresses      Address[]
+
+  @@index([role])
+}
+
+model DeliveryPartnerProfile {
+  id     String @id @default(uuid())
+  userId String @unique
+
+  vehicleType   VehicleType
+  vehicleNumber String      @unique
+
+  isAvailable Boolean @default(false)
+
+  currentLatitude  Float?
+  currentLongitude Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  assignments    OrderAssignment[]
+  trackingPoints TrackingPoint[]
+
+  @@index([isAvailable])
+}
+
+model Address {
+  id String @id @default(uuid())
+
+  userId String
+
+  label       String
+  addressLine String
+  city        String
+
+  latitude  Float
+  longitude Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Order {
+  id          String @id @default(uuid())
+  orderNumber String @unique
+
+  customerId String
+
+  pickupAddress   String
+  pickupLatitude  Float
+  pickupLongitude Float
+
+  dropoffAddress   String
+  dropoffLatitude  Float
+  dropoffLongitude Float
+
+  distanceKm Float
+
+  status OrderStatus @default(PENDING)
+
+  deliveryFee Decimal @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer User @relation(fields: [customerId], references: [id], onDelete: Restrict)
+
+  assignments    OrderAssignment[]
+  pricingQuote   PricingQuote?
+  trackingPoints TrackingPoint[]
+
+  @@index([customerId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderAssignment {
+  id String @id @default(uuid())
+
+  orderId           String
+  deliveryPartnerId String
+
+  assignedAt  DateTime  @default(now())
+  acceptedAt  DateTime?
+  completedAt DateTime?
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  deliveryPartner DeliveryPartnerProfile @relation(fields: [deliveryPartnerId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([deliveryPartnerId])
+  @@index([deliveryPartnerId, completedAt])
+}
+
+model PricingQuote {
+  id      String @id @default(uuid())
+  orderId String @unique
+
+  baseFee     Decimal @db.Decimal(10, 2)
+  distanceFee Decimal @db.Decimal(10, 2)
+
+  trafficCondition  TrafficCondition
+  trafficMultiplier Decimal          @db.Decimal(5, 2)
+
+  weatherCondition  WeatherCondition
+  weatherMultiplier Decimal          @db.Decimal(5, 2)
+
+  totalFee Decimal @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model TrackingPoint {
+  id String @id @default(uuid())
+
+  orderId           String
+  deliveryPartnerId String
+
+  latitude  Float
+  longitude Float
+
+  recordedAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  deliveryPartner DeliveryPartnerProfile @relation(fields: [deliveryPartnerId], references: [id], onDelete: Restrict)
+
+  @@index([orderId, recordedAt])
+  @@index([deliveryPartnerId, recordedAt])
+}
