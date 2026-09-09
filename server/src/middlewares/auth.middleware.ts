@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt.js";
 import ApiError from "../utils/ApiError.js";
 import { authRepository } from "../modules/auth/auth.repository.js";
+import type { UserRole } from "../generated/prisma/enums.js";
 
 
 declare global {
@@ -37,7 +38,7 @@ export const authenticate=async(req: Request,_res: Response,next: NextFunction)=
     req.user = {
       userId: payload.userId,
       token_id:payload.token_id,
-      role: payload.role
+      role: payload.role as UserRole
     };
     next();
 }

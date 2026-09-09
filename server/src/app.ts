@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 // import { env } from "./config/env.js";
 import errorHandler from "./middlewares/error.middleware.js";
 import authRouter from "./modules/auth/auth.routes.js"
+import usersRouter from "./modules/users/users.routes.js"
 
 
 const app = express();
@@ -28,6 +29,7 @@ app.get("/api/v1/health", (_req, res) => {
 
 
 app.use("/api/v1/auth",authRouter);
+app.use("/api/v1/users", usersRouter);
 
 
 app.use(errorHandler)

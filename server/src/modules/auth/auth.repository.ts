@@ -26,18 +26,21 @@ export const authRepository={
         return refreshTokenTable.create({data})
     },
 
-    findById:(id:string)=>{
-        return userTable.findUnique({where:{
+    findById: (id: string) => {
+        return userTable.findUnique({
+            where: {
             id,
+            },
             select: {
-                id: true,
-                name: true,
-                email: true,
-                role: true,
-                createdAt: true,
-            }
-        }})
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            createdAt: true,
+            },
+        });
     },
+
 
     findByTokenId:(tokenId:string)=>{
         return refreshTokenTable.findUnique({where:{token_id:tokenId}})
