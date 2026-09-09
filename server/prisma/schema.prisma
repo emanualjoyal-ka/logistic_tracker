@@ -60,8 +60,24 @@ model User {
   partnerProfile DeliveryPartnerProfile?
   orders         Order[]
   addresses      Address[]
+  refreshTokens  RefreshToken[]
 
   @@index([role])
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  token_id   String @unique
+  token_hash String
+  user_id    String
+  expires_at DateTime
+  is_revoked Boolean  @default(false)
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+  @@map("ref_tokens")
 }
 
 model DeliveryPartnerProfile {
