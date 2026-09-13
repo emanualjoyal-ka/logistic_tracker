@@ -7,6 +7,8 @@ import authRouter from "./modules/auth/auth.routes.js"
 import usersRouter from "./modules/users/users.routes.js"
 import orderRouter from "./modules/orders/order.routes.js"
 import pricingRouter from "./modules/pricing/pricing.routes.js"
+import partnerRouter from "./modules/partners/partner.routes.js"
+import adminRouter from "./modules/admin/admin.routes.js"
 
 
 const app = express();
@@ -34,6 +36,8 @@ app.use("/api/v1/auth",authRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/orders",orderRouter);
 app.use("/api/v1/pricing",pricingRouter);
+app.use("/api/v1/partner",partnerRouter);
+app.use("/api/v1/admin",adminRouter);
 
 
 app.use(errorHandler)

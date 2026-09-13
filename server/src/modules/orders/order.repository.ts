@@ -1,4 +1,4 @@
-import type { OrderStatus, Prisma } from "../../generated/prisma/client.js";
+import type { OrderStatus } from "../../generated/prisma/client.js";
 import prisma from "../../lib/prisma.js"
 import type { PricingResult } from "../pricing/pricing.types.js";
 import type { OrderLocations } from "./order.types.js";
