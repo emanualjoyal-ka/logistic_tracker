@@ -4,6 +4,7 @@ import { getAssignedOrder } from "./partner.helper.js";
 import { canTransitionOrderStatus } from "../../utils/order-status.js";
 import { OrderStatus } from "../../generated/prisma/enums.js";
 import type { OrderAssignmentResponse } from "./partner.types.js";
+import { startTrackingSimulation, stopTrackingSimulation } from "../tracking/tracking.simulator.js";
 
 
 export const partnerServices={
@@ -40,6 +41,7 @@ export const partnerServices={
           throw new ApiError(`Delivery cannot start when status is ${order.status}`,409);
         }
         const response=await partnerRepository.statustoTransit(order.id);
+        await startTrackingSimulation(order.id);
         return response;
     },
 
@@ -52,6 +54,7 @@ export const partnerServices={
           throw new ApiError(`Order cannot be delivered when status is ${order.status}`,409);
         }
         const response=await partnerRepository.statustoDelivered(order.id,assignment.id,assignment.deliveryPartnerId);
+        stopTrackingSimulation(order.id);
         return response;
       }
 }

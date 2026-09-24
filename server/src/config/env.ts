@@ -26,5 +26,5 @@ export const env = {
   REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_SECRET!,
   ACCESS_TOKEN_EXPIRES_IN: (process.env.JWT_ACCESS_EXPIRES_IN || "15m") as NonNullable<SignOptions["expiresIn"]>,
   REFRESH_TOKEN_EXPIRES_IN: (process.env.JWT_REFRESH_EXPIRES_IN || "7d") as NonNullable<SignOptions["expiresIn"]>,
-  // CLIENT_URL: process.env.CLIENT_URL!,
+  CLIENT_URL: process.env.CLIENT_URL!
 };
