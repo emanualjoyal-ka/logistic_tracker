@@ -33,3 +33,13 @@ export const getOrderTrackingHistory=async(req: Request,res: Response)=> {
         data:result
     })
 }
+
+export const getCurrentTrackingController=async(req: Request,res: Response)=> {
+    const customerId = req.user!.userId;
+    const {id}=req.params;
+    const result = await trackingServices.getOrderCurrentTracking(customerId,id)
+    return sendResponse(res,{
+        statusCode:200,
+        data:result
+    })
+}
