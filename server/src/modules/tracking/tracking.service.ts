@@ -62,11 +62,33 @@ export const trackingServices={
             hasPreviousPage: page > 1
         }
     };
-  }
+  },
+
+  getOrderCurrentTracking:async(customerId: string,orderId: unknown)=> {
+     if(!customerId){
+      throw new ApiError("Unauthorized",409)
+    }
+    if(typeof orderId !== "string" || !orderId) {
+      throw new ApiError("Invalid order ID", 400);
+    }
+    const order = await trackingRepository.getCurrentTrackingOrder(orderId,customerId)
+    if (!order) {
+      throw new ApiError("Order not found",404);
+    }
+    const assignment = order.assignments[0];
+    return {
+      orderId: order.id,
+      status: order.status,
+      partner: assignment?.deliveryPartner ? {
+        latitude:assignment.deliveryPartner.currentLatitude,
+        longitude:assignment.deliveryPartner.currentLongitude
+      } : null
+    };
+  },
+
 
 
 
 }
-
 
 

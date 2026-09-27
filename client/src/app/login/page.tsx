@@ -22,9 +22,15 @@ export default function DevLogin() {
     <div>
       <button onClick={login}>Dev Login</button>
       {loggedIn && (
-        <Link href="/customer/orders/c2939af7-dd72-446a-8f39-b2edcc24722c">
+        <div>
+        {/* <Link href="/customer/orders/c2939af7-dd72-446a-8f39-b2edcc24722c">
           Go to Tracking Page
+        </Link> */}
+        <Link href="/customer/orders">
+          Go to Orders
         </Link>
+
+        </div>
       )}
     </div>
   );

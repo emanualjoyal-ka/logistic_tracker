@@ -153,6 +153,38 @@ export const trackingRepository={
                 status: true,
             }
         });
+    },
+
+    getCurrentTrackingOrder:(orderId:string,customerId:string)=>{
+        return orderTable.findFirst({
+        where: {
+          id: orderId,
+          customerId
+        },
+        select: {
+          id: true,
+          status: true,
+          dropoffLatitude: true,
+          dropoffLongitude: true,
+          assignments: {
+            where: {
+              completedAt: null
+            },
+            orderBy: {
+              assignedAt: "desc"
+            },
+            take: 1,
+            select: {
+              deliveryPartner: {
+                select: {
+                  currentLatitude: true,
+                  currentLongitude: true,
+                }
+              }
+            }
+          }
+        }
+      });
     }
     
 
