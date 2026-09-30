@@ -1,20 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
+import { fetchCurrentTracking } from "@/api/tracking.api";
 
-interface CurrentTracking {
+export interface CurrentTracking {
   orderId: string;
   status: string;
-
   partner: {
     latitude: number | null;
     longitude: number | null;
   } | null;
 }
 
-async function fetchCurrentTracking(orderId: string): Promise<CurrentTracking> {
-  const response =await api.get(`/tracking/orders/${orderId}/current`);
-  return response.data.data;
-}
 
 export function useCurrentTracking(orderId: string) {
   return useQuery({

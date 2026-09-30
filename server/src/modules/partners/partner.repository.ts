@@ -131,4 +131,86 @@ export const partnerRepository={
           }
         );
     },
+
+    getProfile:(id:string)=>{
+        return partnerTable.findUnique({
+            where: {userId:id},
+            select: {
+                vehicleNumber:true,
+                vehicleType:true,
+                isAvailable:true
+            }
+        });
+    },
+
+    getAssignedOrders:async(partnerId:string,page:number,limit:number)=>{
+        const skip=(page-1)*limit;
+        const where = {
+        assignments: {
+            some: {
+                deliveryPartner: {
+                    userId: partnerId,
+                }
+            }
+        }};
+        const [orders,totalItems]=await Promise.all([
+            orderTable.findMany({
+                skip,
+                take:limit,
+                orderBy: {
+                    createdAt: "desc"
+                },
+                select: {
+                    id: true,
+                    orderNumber: true,
+                    pickupAddress: true,
+                    dropoffAddress: true,
+                    distanceKm: true,
+                    status: true,
+                    deliveryFee: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
+            }),
+            orderTable.count({
+                where
+            })
+        ])
+        return {orders,totalItems}
+    },
+
+    getAssignedOrder:(orderId:string,partnerId:string)=>{
+        return orderTable.findFirst({
+            where: {
+                id: orderId,
+                assignments: {
+                some: {
+                    deliveryPartner: {
+                        userId: partnerId,
+                    },
+                },
+            }
+            },
+            select: {
+                id: true,
+                orderNumber: true,
+                pickupAddress: true,
+                pickupLatitude: true,
+                pickupLongitude: true,
+                dropoffAddress: true,
+                dropoffLatitude: true,
+                dropoffLongitude: true,
+                distanceKm: true,
+                status: true,
+                deliveryFee: true,
+                createdAt: true,
+                updatedAt: true,
+            }
+        });
+    },
+
+
+
+
+
 }
