@@ -4,6 +4,11 @@ import { setAccessToken } from "@/lib/authTest";
 import Link from "next/link";
 import { useState } from "react";
 
+const custEmail="joyal@gmail.com"
+const custPass="joyal1234"
+const partner="vishnu@localflow.dev"
+const partPass="Password123"
+
 export default function DevLogin() {
     const [loggedIn, setLoggedIn] = useState(false);
   const login = async () => {
@@ -11,7 +16,7 @@ export default function DevLogin() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ email: "joyal@gmail.com", password: "joyal1234" }),
+      body: JSON.stringify({ email: partner, password: partPass }),
     });
     const data = await res.json();
     setAccessToken(data.data.accessToken);
@@ -29,7 +34,9 @@ export default function DevLogin() {
         <Link href="/customer/orders">
           Go to Orders
         </Link>
-
+        <Link href="/partner/dashboard">
+          Go to partner Dashboard
+        </Link>
         </div>
       )}
     </div>
