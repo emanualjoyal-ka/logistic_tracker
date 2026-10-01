@@ -4,10 +4,12 @@ import { authorize } from "../../middlewares/role.middleware.js";
 import {createOrder,getOrders,getOrder, cancelOrder} from "./order.controller.js";
 import { UserRole } from "../../generated/prisma/enums.js";
 import { getOrderTrackingHistory } from "../tracking/tracking.controller.js";
+import { validate } from "../../middlewares/validate.middleware.js";
+import { createOrderSchema } from "./order.validation.js";
 
 const router = Router();
 
-router.post("/",authenticate,authorize(UserRole.CUSTOMER),createOrder);
+router.post("/",authenticate,authorize(UserRole.CUSTOMER),validate(createOrderSchema),createOrder);
 router.get("/",authenticate,authorize(UserRole.CUSTOMER),getOrders);
 router.get("/:id",authenticate,authorize(UserRole.CUSTOMER),getOrder);
 router.post("/:id/cancel",authenticate,authorize(UserRole.CUSTOMER),cancelOrder);

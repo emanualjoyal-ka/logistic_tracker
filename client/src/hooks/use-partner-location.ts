@@ -7,3 +7,4 @@ export const useUpdatePartnerLocation=()=> {
   return useMutation({mutationFn: async (location: LocationInput) => updatePartnerLocation(location)
   });
 }
+

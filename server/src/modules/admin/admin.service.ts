@@ -49,6 +49,69 @@ export const adminServices={
       return response;
     },
 
+    getAdminDashboard:async()=> {
+      const response=await adminRepository.getAdminDashboard();
+      if(!response){
+        throw new ApiError("Dashboard data not found", 404)
+      }
+      return {
+        totalOrders:response.totalOrders,
+        pendingOrders:response.pendingOrders,
+        activeOrders:response.activeOrders,
+        deliveredOrders:response.deliveredOrders,
+        totalPartners:response.totalPartners,
+        availablePartners:response.availablePartners
+      };
+    },
+
+    getAdminOrders:async(page:number,limit:number)=> {
+      const {totalItems,orders}=await adminRepository.getAdminOrders(page,limit);
+      if(!orders){
+        throw new ApiError("No Order found",404)
+      }
+      const totalPages = Math.ceil(totalItems / limit);
+      return {
+          data:orders,
+          pagination:{
+              page,
+              limit,
+              totalItems,
+              totalPages,
+              hasNextPage: page < totalPages,
+              hasPreviousPage: page > 1
+          }
+      };
+    },
+
+    getAdminOrder:async(orderId: unknown)=> {
+      if (typeof orderId !== "string" || !orderId) {
+        throw new ApiError("Invalid order ID", 400);
+      }
+      const order=await adminRepository.getAdminOrder(orderId);
+      if(!order){
+        throw new ApiError("Order not found",404)
+      }
+      return order;
+    },
+
+    getAdminPartners:async(page:number,limit:number)=> {
+      const {totalItems,partners}=await adminRepository.getAllPartner(page,limit);
+      if(!partners){
+        throw new ApiError("No Partners found",404)
+      }
+      const totalPages = Math.ceil(totalItems / limit);
+      return {
+          data:partners,
+          pagination:{
+              page,
+              limit,
+              totalItems,
+              totalPages,
+              hasNextPage: page < totalPages,
+              hasPreviousPage: page > 1
+          }
+      };
+    }
 
 
 
