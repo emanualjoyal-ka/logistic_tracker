@@ -22,3 +22,40 @@ export const assignOrderController=async(req: Request,res: Response)=> {
             data:result
     })
 }
+
+export const dashboardController=async(_req: Request,res: Response)=> {
+    const data = await adminServices.getAdminDashboard();
+    return sendResponse(res,{
+            statusCode:200,
+            data
+    })
+}
+
+export const ordersController=async(req: Request,res: Response)=> {
+    const page=Number(req.query.page) || 1;
+    const limit=Number(req.query.limit) || 5;
+    const data = await adminServices.getAdminOrders(page,limit);
+    return sendResponse(res,{
+            statusCode:200,
+            data
+    })
+}
+
+export const orderController=async(req: Request,res: Response)=> {
+    const { id } = req.params;
+    const data = await adminServices.getAdminOrder(id);
+    return sendResponse(res,{
+            statusCode:200,
+            data
+    })
+}
+
+export const partnersController=async(req: Request,res: Response)=> {
+    const page=Number(req.query.page) || 1;
+    const limit=Number(req.query.limit) || 5;
+    const data = await adminServices.getAdminPartners(page,limit);
+    return sendResponse(res,{
+            statusCode:200,
+            data
+    })
+}
