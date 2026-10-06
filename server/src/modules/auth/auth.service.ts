@@ -4,7 +4,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from "../../utils/jwt.js";
-import type { AuthResponseDTO, LoginInput, LoginResponseDTO, RefreshTokenResponseDTO, RegisterInput } from "./auth.types.js";
+import type { AuthResponseDTO, CreateUserData, LoginInput, LoginResponseDTO, RefreshTokenResponseDTO, RegisterInput } from "./auth.types.js";
 import { authRepository } from "./auth.repository.js";
 import ApiError from "../../utils/ApiError.js";
 import { v4 as uuidv4 } from "uuid";
@@ -17,9 +17,13 @@ export const authServices={
         throw new ApiError("User with this email already exists",409);
     }
 
-    const hashedPasswd = await bcrypt.hash(input.passwordHash, 10);
+    const hashedPasswd = await bcrypt.hash(input.password, 10);
 
-    const userData = {...input,passwordHash:hashedPasswd}
+    const userData: CreateUserData = {
+    name: input.name,
+    email: input.email,
+    passwordHash: hashedPasswd,
+    };
     
     const user=await authRepository.registerUser(userData)
 
@@ -28,7 +32,6 @@ export const authServices={
         name:user.name,
         email:user.email,
         role:user.role,
-        createdAt:user.createdAt
     }
     },
 
@@ -138,8 +141,7 @@ export const authServices={
             id:user.id,
             name:user.name,
             email:user.email,
-            role:user.role,
-            createdAt:user.createdAt
+            role:user.role
         }
     }
 }

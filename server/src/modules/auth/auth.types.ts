@@ -1,8 +1,15 @@
 export interface RegisterInput{
   name: string;
   email: string;
+  password: string;
+}
+
+export interface CreateUserData {
+  name: string;
+  email: string;
   passwordHash: string;
 }
+
 
 export interface LoginInput {
   email: string;
@@ -14,7 +21,6 @@ export interface AuthResponseDTO{
     name:string;
     email:string;
     role: string;
-    createdAt:Date;
 }
 
 export interface LoginResponseDTO{
