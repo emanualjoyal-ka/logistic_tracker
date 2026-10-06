@@ -4,7 +4,7 @@ import { cancelOrder, fetchOrder, fetchOrders } from "@/api/order.api";
 export const useOrders=()=> {
   return useQuery({
     queryKey: ["orders"],
-    queryFn: fetchOrders,
+    queryFn: fetchOrders
   });
 }
 

@@ -1,5 +1,4 @@
 "use client";
-
 import OrderCard from "@/components/customer/OrderCard";
 import { useOrders } from "@/hooks/use-orders";
 
@@ -8,7 +7,7 @@ export default function OrdersPage() {
     data: orders,
     isLoading,
     isError,
-    error,
+    error
   } = useOrders();
 
   if (isLoading) {
@@ -22,15 +21,8 @@ export default function OrdersPage() {
   if (isError) {
     return (
       <main className="p-6">
-        <p>
-          Failed to load orders.
-        </p>
-
-        <p className="text-sm text-gray-500">
-          {error instanceof Error
-            ? error.message
-            : "Unknown error"}
-        </p>
+        <p>Failed to load orders.</p>
+        <p className="text-sm text-gray-500">{error instanceof Error ? error.message : "Unknown error"}</p>
       </main>
     );
   }
@@ -38,48 +30,17 @@ export default function OrdersPage() {
   if (!orders || orders.length === 0) {
     return (
       <main className="p-6">
-        <h1 className="text-2xl font-bold">
-          My Orders
-        </h1>
-
-        <p className="mt-4">
-          You haven't created any
-          orders yet.
-        </p>
+        <h1 className="text-2xl font-bold">My Orders</h1>
+        <p className="mt-4">You haven't created any orders yet.</p>
       </main>
     );
   }
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-bold">
-        My Orders
-      </h1>
-
+      <h1 className="text-2xl font-bold">My Orders</h1>
       <div className="mt-6 space-y-4">
-        {orders.map((order) => (
-          // <div
-          //   key={order.id}
-          //   className="rounded-lg border p-4"
-          // >
-          //   <p className="font-semibold">
-          //     {order.orderNumber}
-          //   </p>
-
-          //   <p>
-          //     {order.pickupAddress}
-          //   </p>
-
-          //   <p>
-          //     {order.dropoffAddress}
-          //   </p>
-
-          //   <p className="mt-2">
-          //     Status: {order.status}
-          //   </p>
-          // </div>
-          <OrderCard key={order.id} order={order}/>
-        ))}
+        {orders.map((order) => <OrderCard key={order.id} order={order}/>)}
       </div>
     </main>
   );

@@ -1,11 +1,11 @@
 import prisma from "../../lib/prisma.js"
-import type { RefreshTokenCreateDTO, RegisterInput } from "./auth.types.js";
+import type { CreateUserData, RefreshTokenCreateDTO } from "./auth.types.js";
 
 const userTable=prisma.user;
 const refreshTokenTable=prisma.refreshToken;
 
 export const authRepository={
-    registerUser:(data:RegisterInput)=>{
+    registerUser:(data:CreateUserData)=>{
         return userTable.create({
         data:data,
         select: {
@@ -13,7 +13,6 @@ export const authRepository={
         name: true,
         email: true,
         role: true,
-        createdAt: true,
         },
     });
     },
