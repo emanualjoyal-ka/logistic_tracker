@@ -6,7 +6,7 @@ export const API_ENDPOINTS={
         LOGIN:"/auth/login",
         LOGOUT:"/auth/logout",
         ME:"/auth/me",
-        REFRESH_TOKEN:"/auth/refresh-token"
+        REFRESH_TOKEN:"/auth/refresh"
     },
     orders:{
         GET_ORDERS:"/orders",

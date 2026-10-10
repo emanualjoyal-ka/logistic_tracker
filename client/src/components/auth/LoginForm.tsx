@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { Button2 } from "../ui/Buttons";
 import { InputField } from "../ui/InputFields";
 import { useLoginUser } from "@/hooks/use-auth";
-import { setAccessToken } from "@/lib/TokenStore";
 import { ROLE_ROUTES } from "@/lib/auth";
+import { useAppDispatch } from "@/store/hook/hooks";
+import { setCredentials } from "@/features/auth/authSlice";
 
 type loginValues = {
   email: string;
@@ -21,13 +22,14 @@ const admin = "admin@localflow.dev";
 const Pass = "Password123";
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const form = useForm<loginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       // email:"",
       // password:""
-      email: cust,
-      password: custPass,
+      email: admin,
+      password: Pass,
     },
   });
   const { register, handleSubmit, formState, reset } = form;
@@ -39,7 +41,12 @@ const LoginForm = () => {
   const onSubmit = (data: loginValues) => {
     mutate(data, {
       onSuccess: (response) => {
-        setAccessToken(response.accessToken);
+        dispatch(
+          setCredentials({
+            user: response.user,
+            accessToken: response.accessToken
+          })
+        );
         router.replace(ROLE_ROUTES[response.user.role]);
         reset();
       },
