@@ -581,6 +581,8 @@ const AdminOrderDetailsPage = () => {
   const orderId = params.id as string;
 
   const { data: orders, isLoading: ordersLoading } = useAdminOrder(orderId);
+  console.log(orders);
+  
 
   const {
     data: partners,
