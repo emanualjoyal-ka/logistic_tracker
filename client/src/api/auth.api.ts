@@ -11,4 +11,10 @@ export const loginUser=async(data:Login):Promise<LoginResponse>=>{
     const response=await api.post(API_ENDPOINTS.auth.LOGIN,data);
     return response.data.data;
 }
+
+export const logoutUser=async()=>{
+    const response=await api.post(API_ENDPOINTS.auth.LOGOUT);
+    console.log(response.data);
+    return response.data;
+}
    

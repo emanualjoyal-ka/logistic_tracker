@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { API_ENDPOINTS } from "./endpoints/endpoints";
-import { AdminDashboard, AdminOrder, AdminPartner } from "@/types/admin";
+import { AdminDashboard, AdminOrder, AdminPartner, AvailablePartner, AvailablePartnersResponse } from "@/types/admin";
 
 export const fetchOrdersDashboard=async(): Promise<AdminDashboard>=> {
   const response = await api.get(API_ENDPOINTS.admin.GET_DASHBOARD_ORDERS);
@@ -26,8 +26,9 @@ export const fetchPartners=async(): Promise<AdminPartner[]> => {
   return response.data.data.data;
 }
 
-export const fetchAvailablePartners=async()=> {
+export const fetchAvailablePartners=async():Promise<AvailablePartnersResponse>=> {
   const response = await api.get(API_ENDPOINTS.admin.GET_AVAILABLE_PARTNER);
+  console.log("partners.....",response.data.data);
   return response.data.data;
 }
 
