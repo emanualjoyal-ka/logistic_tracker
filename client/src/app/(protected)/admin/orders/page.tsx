@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useAdminOrders } from "@/hooks/use-admin";
 
@@ -11,12 +10,7 @@ const statusStyles: Record<string, string> = {
 };
 
 const AdminOrdersPage = () => {
-  const {
-    data: orders,
-    isLoading,
-    isError,
-  } = useAdminOrders();
-
+  const {data: orders,isLoading,isError} = useAdminOrders();
   if (isLoading) {
     return (
       <main className="min-h-screen bg-gray-50 p-6">
@@ -42,137 +36,66 @@ const AdminOrdersPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
+    <main className="min-h-screen">
+      <div>
         <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              All Orders
-            </h1>
-
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm">
               Manage deliveries and delivery partner assignments.
             </p>
-          </div>
-
-          <div className="rounded-lg bg-white px-4 py-2 text-sm shadow-sm ring-1 ring-gray-200">
-            <span className="text-gray-500">Total: </span>
-            <span className="font-semibold text-gray-900">
+          <div className="px-4">
+            <span>Total: </span>
+            <span className="font-semibold">
               {orders?.length ?? 0}
             </span>
           </div>
         </div>
-
-        {/* Table */}
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-white/20">
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="border-b bg-gray-50">
+            <table className="w-full text-center bg-black">
+              <thead className="border-b border-white/20 text-white">
                 <tr>
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Order
-                  </th>
-
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Customer
-                  </th>
-
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Route
-                  </th>
-
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Status
-                  </th>
-
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Partner
-                  </th>
-
-                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Fee
-                  </th>
-
-                  <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Action
-                  </th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Order</th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Customer</th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Route</th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Status</th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Partner</th>
+                  <th className="px-5 py-4 text-xs font-semibold uppercase tracking-wide">Fee</th>
+                  <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide">Action</th>
                 </tr>
               </thead>
-
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-white/20">
                 {orders?.map((order) => {
                   const assignment = order.assignments?.[0];
-
                   return (
-                    <tr
-                      key={order.id}
-                      className="transition hover:bg-gray-50"
-                    >
-                      {/* Order */}
+                    <tr key={order.id} className="transition hover:bg-white/5">
                       <td className="px-5 py-4">
-                        <p className="font-semibold text-gray-900">
-                          {order.orderNumber}
-                        </p>
-
+                        <p className="font-semibold">{order.orderNumber}</p>
                         <p className="mt-1 text-xs text-gray-400">
-                          {new Date(order.createdAt).toLocaleDateString(
-                            "en-IN"
-                          )}
+                          {new Date(order.createdAt).toLocaleDateString("en-IN")}
                         </p>
                       </td>
-
-                      {/* Customer */}
                       <td className="px-5 py-4">
-                        <p className="font-medium text-gray-900">
-                          {order.customer.name}
-                        </p>
-
-                        <p className="text-xs text-gray-500">
-                          {order.customer.email}
-                        </p>
+                        <p className="font-medium capitalize">{order.customer.name}</p>
+                        <p className="text-xs text-gray-500">{order.customer.email}</p>
                       </td>
-
-                      {/* Route */}
                       <td className="px-5 py-4">
                         <div className="max-w-[180px]">
-                          <p className="truncate text-sm text-gray-900">
-                            {order.pickupAddress}
-                          </p>
-
-                          <p className="my-1 text-xs text-gray-400">
-                            ↓ {order.distanceKm.toFixed(1)} km ↓
-                          </p>
-
-                          <p className="truncate text-sm text-gray-900">
-                            {order.dropoffAddress}
-                          </p>
+                          <p className="truncate text-sm capitalize">{order.pickupAddress}</p>
+                          <p className="my-1 text-xs text-gray-400">↓ {order.distanceKm.toFixed(1)} km ↓</p>
+                          <p className="truncate text-sm capitalize">{order.dropoffAddress}</p>
                         </div>
                       </td>
-
-                      {/* Status */}
                       <td className="px-5 py-4">
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                            statusStyles[order.status] ??
-                            "bg-gray-100 text-gray-700"
-                          }`}
-                        >
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[order.status] ?? "bg-gray-100 text-gray-700"}`}>
                           {order.status.replaceAll("_", " ")}
                         </span>
                       </td>
-
-                      {/* Partner */}
                       <td className="px-5 py-4">
                         {assignment ? (
                           <div>
-                            <p className="font-medium text-gray-900">
-                              {assignment.deliveryPartner.user.name}
-                            </p>
-
-                            <p className="text-xs text-gray-500">
-                              {assignment.deliveryPartner.vehicleNumber}
-                            </p>
+                            <p className="font-medium">{assignment.deliveryPartner.user.name}</p>
+                            <p className="text-xs text-gray-500">{assignment.deliveryPartner.vehicleNumber}</p>
                           </div>
                         ) : (
                           <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
@@ -180,20 +103,11 @@ const AdminOrdersPage = () => {
                           </span>
                         )}
                       </td>
-
-                      {/* Fee */}
                       <td className="px-5 py-4">
-                        <span className="font-semibold text-gray-900">
-                          ₹{Number(order.deliveryFee).toFixed(2)}
-                        </span>
+                        <span className="font-semibold">₹{Number(order.deliveryFee).toFixed(2)}</span>
                       </td>
-
-                      {/* Action */}
                       <td className="px-5 py-4 text-right">
-                        <Link
-                          href={`/admin/orders/${order.id}`}
-                          className="inline-flex rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-700"
-                        >
+                        <Link href={`/admin/orders/${order.id}`} className="inline-flex rounded-lg bg-white/20 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/50">
                           View
                         </Link>
                       </td>
@@ -203,16 +117,10 @@ const AdminOrdersPage = () => {
               </tbody>
             </table>
           </div>
-
           {!orders?.length && (
             <div className="p-12 text-center">
-              <p className="font-medium text-gray-900">
-                No orders found
-              </p>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Orders will appear here when they are created.
-              </p>
+              <p className="font-medium text-gray-900">No orders found</p>
+              <p className="mt-1 text-sm text-gray-500">Orders will appear here when they are created.</p>
             </div>
           )}
         </div>

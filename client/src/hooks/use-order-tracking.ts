@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
-import { getAccessToken } from "@/lib/TokenStore";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
 
 export interface TrackingLocation {
   latitude: number;
@@ -14,8 +16,9 @@ export const useOrderTracking = (orderId: string) => {
     useState<TrackingLocation | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+   
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   useEffect(() => {
-    const accessToken = getAccessToken();
     console.log(accessToken);
 
     if (!orderId || !accessToken) {

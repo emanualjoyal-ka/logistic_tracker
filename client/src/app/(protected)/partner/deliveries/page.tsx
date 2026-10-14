@@ -27,7 +27,7 @@ const PartnerDeliveriesPage=()=> {
     );
   }
   return (
-    <main className="mx-auto max-w-5xl p-6">
+    <main>
       <h1 className="text-2xl font-bold">My Deliveries</h1>
       <div className="mt-6 space-y-4">
         {orders.data.map((order) => (

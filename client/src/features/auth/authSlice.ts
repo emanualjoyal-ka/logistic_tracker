@@ -11,16 +11,16 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials: ( state, action: PayloadAction<{ user: User, accessToken: string}>) => {
+    setCredentials: ( state, action: PayloadAction<{user: User, accessToken: string}>) => {
       state.user = action.payload.user
       state.accessToken = action.payload.accessToken
       state.isAuthChecked = true
     },
-	setAccessToken: ( state, action:PayloadAction<string> ) => { 
-        state.accessToken = action.payload
-	 },
-	setAuthChecked:(state) => { 
-		state.isAuthChecked = true
+	  setAccessToken: ( state, action:PayloadAction<string> ) => { 
+      state.accessToken = action.payload
+	  },
+	  setAuthChecked:(state) => { 
+		  state.isAuthChecked = true
     },
     logout: (state) => {
       state.user = null
